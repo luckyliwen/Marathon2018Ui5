@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>Runable Code created by Fast Designer</title>
+
+<script id="sap-ui-bootstrap" 
+       src="../resources/sap-ui-core.js"
+		data-sap-ui-libs="sap.m,sap.ui.table,sap.ui.unified,sap.chart,sap.viz"
+       data-sap-ui-theme="sap_bluecrystal"
+       data-sap-ui-xx-bindingSyntax="complex"
+       >
+</script>
+
+<script id="myXmlContent" type="text/xmldata"> 
+<core:View
+    controllerName="TestViz"
+    xmlns="sap.m"
+    xmlns:controls="sap.viz.ui5.controls"
+    xmlns:data="sap.viz.ui5.data"
+    xmlns:feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:core="sap.ui.core">
+
+    <Page>
+        <content>
+            <controls:VizFrame
+                id="registrationViz"
+                uiConfig="{applicationSet:'fiori'}"
+                height="300px"
+                width="100%"
+                vizType="column">
+                <controls:dataset>
+                    <data:FlattenedDataset
+                        data="{/Registrations}">
+                        <data:dimensions>
+                            <data:DimensionDefinition
+                                name="Status"
+                                value="{Status}">
+                            </data:DimensionDefinition>
+                        </data:dimensions>
+                        <data:measures>
+                            <data:MeasureDefinition
+                                name="Count"
+                                value="{Count}">
+                            </data:MeasureDefinition>
+                        </data:measures>
+                    </data:FlattenedDataset>
+                </controls:dataset>
+                <controls:feeds>
+                    <feeds:FeedItem
+                        id="valueAxisFeed"
+                        uid="valueAxis"
+                        type="Measure"
+                        values="Count">
+                    </feeds:FeedItem>
+                    <feeds:FeedItem
+                        uid="categoryAxis"
+                        type="Dimension"
+                        values="Status">
+                    </feeds:FeedItem>
+                </controls:feeds>
+            </controls:VizFrame>
+        </content>
+    </Page>
+</core:View>
+</script>
+<script>
+sap.ui.controller("TestViz", {
+    // ========OnInit part, add local demo data by guess, please adjust by yourself ============
+    // ====For some binding if not start by /, please don't forget add the bindContext() ===
+
+    onInit : function () {
+
+       this.oRegViz = this.byId("registrationViz");
+
+		var mStastics = {
+			Registrations: [
+				{Status: "Submitted", Count: 200},
+				{Status: "Approved", Count: 100},
+				{Status: "Rejected", Count: 20},
+			]
+		};
+		var dataModel = new sap.ui.model.json.JSONModel(mStastics);
+
+        this.oRegViz.setModel(dataModel);
+        this.oRegViz.setVizProperties({
+                plotArea: {
+                    dataLabel: {
+                        // formatString:CustomerFormat.FIORI_LABEL_SHORTFORMAT_2,
+                        visible: true
+                    }
+                },
+                valueAxis: {
+                    // label: {
+                    //     formatString: CustomerFormat.FIORI_LABEL_SHORTFORMAT_10
+                    // },
+                    title: {
+                        visible: true
+                    }
+                },
+                categoryAxis: {
+                    title: {
+                        visible: true
+                    }
+                },
+                title: {
+                    visible: true,
+                    text: 'Registratration count by status'
+                }
+            });
+
+    },
+
+    // ========formatter part ============
+});
+var viewContent = sap.ui.xmlview({ viewContent: jQuery("#myXmlContent").html() });
+    var myApp = new sap.m.App('myDemoApp');
+    myApp.addPage(viewContent);
+    myApp.placeAt("content");
+</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>

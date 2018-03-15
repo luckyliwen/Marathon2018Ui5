@@ -1,0 +1,216 @@
+<core:FragmentDefinition
+    xmlns:table="sap.ui.table"
+    xmlns="sap.m"  xmlns:mylib="csr.lib"
+    xmlns:core="sap.ui.core">
+ 
+    <table:Table id="registrationTable"
+        visibleRowCount="30"  showColumnVisibilityMenu="true"
+        selectionMode="MultiToggle"
+        rowSelectionChange="onRegistrationTableRowSelectChanged">
+
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                   <!--  <core:Icon
+                        src="sap-icon://question-mark">
+                    </core:Icon> -->
+                    <ToolbarSpacer />
+                    <Button  id="emailBtn"  enabled="false"  
+                        text="Send Email"
+                        icon="sap-icon://email"
+                        press="onSendEmailPressed">
+                    </Button>
+                    <Button
+                        id="ExportBtn-registrationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
+
+        <table:columns>
+            <table:Column id="UserId">
+                <table:label>
+                    <Label
+                        text="User ID">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <mylib:UserLink 
+                        text="{UserId}" href="{path: 'UserId', formatter: '.fmtUserHref'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:label>
+                    <Label
+                        text="ID / Passport">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{IdOrPassport}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column >
+                <table:label>
+                    <Label
+                        text="Last Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{LastName}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="First Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{FirstName}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            
+            <table:Column id="NationalityCol">
+                <table:label>
+                    <Label
+                        text="Nationality">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Nationality}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column visible="true" width="175px" id="EmailCol">
+                <table:label>
+                    <Label
+                        text="Email">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Email}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column width="125px" id="PhoneCol">
+                <table:label>
+                    <Label
+                        text="Phone">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Phone}">
+                    </Text>
+                </table:template>
+            </table:Column>
+           
+            
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Distance">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Distance}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column id="StatusCol">
+                <table:label>
+                    <Label
+                        text="Status">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <ObjectStatus
+                            text="{Status}"
+                            state="{path: 'Status', formatter:'.fmtStatus'}">
+                    </ObjectStatus>
+                </table:template>
+            </table:Column>
+
+            <table:Column visible="true">
+                <table:label>
+                    <Label
+                        text="Department">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Department}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column visible="true">
+                <table:label>
+                    <Label
+                        text="Location">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Location}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="TshirtSize">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{TshirtSize}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="Club">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Club}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="Submit Time">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{path: 'SubmittedTime',type:'sap.ui.model.type.DateTime', formatOptions : { style:'medium',pattern: 'MM/dd HH:mm:ss'}}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+        </table:columns>
+    </table:Table>
+
+</core:FragmentDefinition>
+

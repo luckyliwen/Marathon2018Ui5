@@ -1,0 +1,89 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="Marathon Project Setting"
+        contentWidth="800px">
+        <content>
+            <Label
+                text="说明： 普通员工注册受名额限制，VIP不受限制，系统管理员需要正确维护该信息">
+            </Label>
+            <form:SimpleForm
+                id="projectForm">
+                <form:content>
+
+                    <Label
+                        text="Maximum Runner number for GCO and others"
+                        required="true"
+                        tooltip="GCO and others最大名额限制">
+                    </Label>
+                    <Input
+                        value="{MaxRegGcoNum}" change="onSettingInputChanged"
+                        id="MaxRegGcoNum">
+                    </Input>
+
+                    <Label
+                        text="Maximum Runner number for Labs"
+                        required="true"
+                        tooltip="Labs 最大名额限制">
+                    </Label>
+                    <Input
+                        value="{MaxRegLabsNum}" change="onSettingInputChanged"
+                        id="MaxRegLabsNum">
+                    </Input>
+
+                    <Label
+                        text="Maximum Runner number for DBS"
+                        required="true"
+                        tooltip="DBS 最大名额限制">
+                    </Label>
+                    <Input
+                        value="{MaxRegDbsNum}" change="onSettingInputChanged"
+                        id="MaxRegDbsNum">
+                    </Input>
+
+
+                    <!-- <Label
+                        text="Free VIP number"
+                        required="true"
+                        tooltip="VIP 剩余名额：比如之前预留了20个名额，但只有15个VIP，多余的5个名额可以让给普通员工">
+                        <tooltip>
+                        </tooltip>
+                    </Label>
+                    <Input  
+                        value="{FreeVipNum}"  change="onSettingInputChanged"
+                        id="FreeVipNum">
+                    </Input> -->
+
+                    <Label
+                        text="VIP List"
+                        required="true"
+                        tooltip="VIP ID 列表：空格分开，">
+                        <tooltip>
+                        </tooltip>
+                    </Label>
+                    <TextArea
+                        value="{VipIds}"  change="onSettingInputChanged"
+                        rows="4"
+                        id="VipIds">
+                    </TextArea>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <beginButton>  
+            <Button
+                id="settingOkBtn"  enabled="true"
+                text="OK"
+                press="onSettingOkPressed">
+            </Button>
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onSettingCancelPressed">
+            </Button>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

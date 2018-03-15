@@ -1,0 +1,30 @@
+.MarginTop {
+	margin-top: 2em; !important; 
+}
+
+.MarginTop1 {
+	margin-top: 2em;
+}
+
+.MarginBottom {
+	margin-bottom: 2em;
+}
+
+.MarginBottom1 {
+	margin-bottom: 1em;  !important; 
+}
+
+.MarginTopBottom {
+	margin-bottom: 2em; !important; 
+	margin-top: 2em; !important; 
+}
+
+
+.MarginLeftRight {
+	margin-left: 2em !important; 
+	margin-right: 2em !important;
+}
+
+.MarginRight {
+	margin-right: 2rem !important;
+}

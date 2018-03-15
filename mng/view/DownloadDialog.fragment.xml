@@ -1,0 +1,61 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:table="sap.ui.table"
+    xmlns:core="sap.ui.core">
+
+    <Dialog contentWidth="800px"
+        title="Download Dialog">
+        <content>
+            <Panel>
+                <content>
+                    <table:Table id="downloadTable"
+                        selectionMode="None"
+                        visibleRowCount="12"
+                        rows="{/}"
+                        title="Please press download icon to download (As it is too large, so download seperately) ">
+                        <table:columns>
+                            <table:Column
+                                width="15%"
+                                label="No.">
+                                <table:template>
+                                    <Text
+                                        text="{Seq}">
+                                    </Text>
+                                </table:template>
+                            </table:Column>
+                            <table:Column
+                                width="70%"
+                                label="Runner ">
+                                <table:template>
+                                    <Text
+                                        text="{Name}">
+                                    </Text>
+                                </table:template>
+                            </table:Column>
+                            <table:Column  width="8em" hAlign="Center" 
+                                label="Download">
+                                <table:template>
+                                    <core:Icon
+                                        src="sap-icon://download"
+                                        press="onDownloadIconPressed">
+                                    </core:Icon>
+                                </table:template>
+                            </table:Column>
+                        </table:columns>
+                        <table:rows>
+                        </table:rows>
+                        <table:title>
+                        </table:title>
+                    </table:Table>
+              
+                </content>
+            </Panel>
+        </content>
+        <endButton>
+            <Button
+                text="Close"
+                press="onCloseDownloadDialogPressed">
+            </Button>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

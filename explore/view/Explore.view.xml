@@ -1,0 +1,48 @@
+<core:View
+    controllerName="csr.explore.controller.Explore"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+<App>
+<pages>
+    <Page   title="2018 Creat Wall Marathon Information"
+        titleLevel="H2">
+        <content>
+            <IconTabBar expandable="false"  id="iconTabBar"  select="onTconTabBarSelectChanged"
+                selectedKey="Registrations">
+                <items>
+                    <IconTabFilter
+                        text="Runners"  key="Registrations"
+                        icon="sap-icon://physical-activity">
+                        <content>
+                            <core:Fragment
+                                fragmentName="csr.explore.view.Registration" type="XML">
+                            </core:Fragment>
+                        </content>
+                    </IconTabFilter>
+                    
+                    <IconTabFilter
+                        text="Statistics"  key="Statistics"
+                        icon="sap-icon://multiple-bar-chart">
+                        <content>
+                            <core:Fragment
+                                fragmentName="csr.explore.view.Statistics" type="XML">
+                            </core:Fragment>
+                        </content>
+                    </IconTabFilter>
+                    
+                </items>
+            </IconTabBar>
+        </content>
+        <footer>
+            <Bar>
+                <contentRight>
+                    
+
+                    
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</pages>
+</App>
+</core:View>

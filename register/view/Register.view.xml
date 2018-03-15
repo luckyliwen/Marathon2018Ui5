@@ -1,0 +1,158 @@
+<mvc:View controllerName="csr.register.controller.Register" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:mylib="csr.lib"
+	xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title='{parts:[ {path: "/Status"},{path:"/RejectReason"}], formatter: ".fmtPageTitle"}' id="registerPage">
+				<content>
+					<l:VerticalLayout
+						class="sapUiContentPadding"
+						width="100%">
+						<l:content>
+							 <!-- Simple CSR developed by Let’s Shine Dream Team" -->
+							<form:SimpleForm id="eventForm" title="2018 Great Wall Marathon Information"
+								editable="false" width="100%">
+								<form:content>
+									<!-- <core:Title /> -->
+									<Label text="Closing date for registration" />
+  									<Title titleStyle="H5" text="18:00, March 28th" />
+									<Label text="Event date &amp; venue" />
+  									<Title titleStyle="H5" text="May 19st (Saturday), Huang-ya-guan Great Wall, Tianjin" />
+
+									<!-- <core:Title /> -->
+									<!-- <Label text="Runner Candidate Number" />
+  									<Title titleStyle="H5" text="120  First Registering, Frist get!" /> -->
+
+									<Label text="Official event site (external)" textAlign="left" />
+									<Link text="http://great-wall-marathon.com/"  target="_blank" 
+									 href="http://great-wall-marathon.com/"/>
+
+									<Label text="The latest updates on Jam page" textAlign="left" />
+									<Link text="SAP Great Wall Marathon 2018 Team Jam Group"  target="_blank" 
+										href="https://jam4.sapjam.com/groups/3mAEh25cxRkckjYqVAQpcG/overview_page/182042" />
+
+								</form:content>
+							</form:SimpleForm>
+							<form:SimpleForm id="registerForm" title="My Registration Information" editable="true" 
+								labelSpanL="3"  labelSpanM="3"  emptySpanL="3"
+								emptySpanM="3"  columnsL="2"  columnsM="2">
+								<form:content>
+								<core:Title text="Basic" />
+									<Label text="SAP ID and Name"  required="true" />
+									<Input value="{/UserId}" enabled="false"  />
+									<Input value="{/LastName}, {/FirstName}" enabled="false" />
+									
+
+									<Label text="ID or Passport" id="RegIdPassportLabel" required="true" 
+										tooltip="ID / Passport Number"/>
+									<Input value="{/IdOrPassport}"  id="RegIdPassport" change="onInputChanged"/>
+
+									<Label text="Surname (拼音:姓)" id="RegLastNameLabel" required="true" 
+										tooltip="Same as Passport or ID card"/>
+									<Input value="{/RegLastName}"  id="RegLastName" change="onInputChanged"/>
+
+									<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" 
+										tooltip="Same as Passport or ID card"/>
+									<Input value="{/RegFirstName}" id="RegFirstName" change="onInputChanged"/>
+
+									<Label text="Nationality/Area" id="NationalityLabel" required="true" />
+									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" 
+										change="onNationalityChanged" />
+									<Input id="OtherNationality" value="{/OtherNationality}" change="onInputChanged" enabled="false"  />
+									<!-- enabled = "{=  ${Nationality}=='Others' ?  true : false  }" -->
+
+									<Label text="Title" id="TitleLabel" required="true" />
+									<mylib:SelectExt name="Title" selectedKey="{/Title}" id="Title" />
+
+									<Label text="Age" id="AgeLabel" required="true" />
+									<Input value="{/Age}" type="Number" id="Age"  change="onInputChanged"/>
+									
+									<Label text="Email Address" id="EmailLabel" required="true" />
+									<Input value="{/Email}" type="Email" id="Email"  change="onInputChanged"/>
+								
+									<Label text="Phone"  required="true" />
+									<Input value="{/Phone}" type="Tel" id="Phone"  change="onInputChanged" />
+									
+								<core:Title text="Detail" />
+									<Label text="Distance" id="DistanceLabel" required="true" />
+									<mylib:SelectExt   id="Distance"  enableAdditionalText="true" name="Distance"
+										selectedKey="{/Distance}" />
+
+									<Label text="T-shirt Size" id="TshirtSizeLabel" required="true" />
+									<mylib:SelectExt selectedKey="{/TshirtSize}"  enableAdditionalText="true" name="TshirtSize"
+										id="TshirtSize" />
+
+									 <Label text="Previous best time" />
+									 <VBox width="100%">
+			                            <HBox> <Label text="Full Marathon" width="120px" /> 
+	                                    	   <Input value="{/FullBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+	                                    </HBox>
+	                                       <HBox> <Label text="Half Marathon" width="120px" /> 
+	                                    	   <Input value="{/HalfBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+	                                    </HBox>
+	                                       <HBox> <Label text="8.5K Fun Run" width="120px" /> 
+	                                    	   <Input value="{/FunBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+	                                    </HBox>
+	                                </VBox>
+																	
+									<Label text="Department" id="DepartmentLabel" required="true" />
+									<mylib:SelectExt name="Department" selectedKey="{/Department}"  id="Department" />
+
+									<Label text="Work Location" id="LocationLabel" required="true" />
+									<mylib:SelectExt name="Location" selectedKey="{/Location}"  id="Location" />
+
+									<Label text="Club" id="ClubLabel" required="false" />
+									<mylib:SelectExt name="Club" selectedKey="{/Club}" id="Club" />
+
+								<core:Title text="Attachments (Move mouse to title to see detail instruction)" /> 
+								    <Label text="ID(身份证) or Passport(2M > size >100K)" required="true" tooltip="For Chinese: 身份证, 正反面一起 For foreigner: passport: the page with photo"/>
+                					<mylib:FileUploaderExt  id="fileUploaderId" width="400px"  selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNameId}" 
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+                    				<Label text="Foreign Residence Permit(2M > size >100K)" required="true" id="labelUploaderResidence" 
+                    					tooltip="The foreigner residence permit in China is not your visa but your residence permit that gives you the right to live in China. Upon arrival in China, you have 30 days to obtain your residence permit"/>
+
+                					<mylib:FileUploaderExt  id="fileUploaderResidence" width="400px"  selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNameResidence}" 
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+<!-- 									<Label text="Headshot Photo (2M > size >100K)" required="true" 
+										tooltip="Headshot photo, will be used to create poster."/>
+                					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+ -->
+                    				<Label text="Form (Download from below button)" required="true" 
+                    					tooltip="Download form, fill necessary information carefully and remember to sign it"/>
+                					<mylib:FileUploaderExt  id="fileUploaderForm" width="400px" selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNameForm}"
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+								</form:content>
+							</form:SimpleForm>
+						</l:content>
+					</l:VerticalLayout>
+				</content>
+				<footer>
+		            <Bar id="footerBar">
+		            <contentMiddle>
+	                    <Button
+	                        text="Download Registration Form"
+	                        icon="sap-icon://download"
+	                        press="onDownloadFormPressed">
+	                    </Button>
+	                  
+                	</contentMiddle>
+		            </Bar>
+		        </footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
+

@@ -1,0 +1,65 @@
+<core:View
+    controllerName="csr.mng.controller.Main"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SplitApp>
+        <masterPages>
+            <Page
+                title="Approve Registration">
+                <content>
+                   <!--  <SearchField
+                        id="searchEvent"
+                        search="onListSearchPressed"
+                        liveChange="onListSearchLiveChanged">
+                    </SearchField> -->
+                    <!-- , filters: [{path: 'Status', operator: 'eq', value1:'Submitted'}] -->
+                    <SegmentedButton  id="segmentBtn"
+                        width="100%"
+                        select="onNormalVipSegmentSelected">
+                        <buttons>
+                            <Button
+                                text="Normal" tooltip="Normal Submitted"
+                                id="normalSegment">
+                            </Button>
+                            <Button
+                                text="VIP"  tooltip="VIP Submitted"
+                                id="vipSegment">
+                            </Button>
+                            <Button
+                                text="Others"  tooltip="Approved &amp; Rejected"
+                                id="otherSegment">
+                            </Button>
+                        </buttons>
+                    </SegmentedButton>
+
+                    <List
+                        growing="true"  growingThreshold="150"
+                        id="registrationList"
+                        noDataText="no registration"
+                        mode="SingleSelectMaster"
+                        selectionChange="onListSelectionChanged">
+                    </List>
+                </content>
+                 <footer> <Bar>
+                <contentRight>
+                    <Button
+                        text="Refresh"
+                        type="Emphasized"
+                        press="onFreshPressed"
+                        icon="sap-icon://fresh"
+                        id="sortBtn"
+                        />
+                    </contentRight>
+                </Bar>
+            </footer>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <core:Fragment
+                fragmentName="csr.mng.view.Detail"
+                type="XML">
+            </core:Fragment>
+        </detailPages>
+    </SplitApp>
+</core:View>

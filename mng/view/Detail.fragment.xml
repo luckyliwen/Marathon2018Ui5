@@ -1,0 +1,197 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:html="http:www.w3.org1999xhtml"
+    xmlns:table="sap.ui.table"
+    xmlns:commons="sap.ui.commons"
+    xmlns:core="sap.ui.core"
+    xmlns:mylib="csr.lib"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form">
+
+    <Page  id="detailPage">
+    <!-- <HBox>
+    	<core:HTML id="registrationInfo" />
+    	<Button text="Fresh"  icon="sap-icon://fresh" press="onFreshPressed" />
+    </HBox> -->
+    <form:SimpleForm id="detailForm" editable="true"  layout="ResponsiveGridLayout"
+			labelSpanXL="5" labelSpanL="5"  labelSpanM="5"  
+			emptySpanM="0" emptySpanL="0"  emptySpanXL="0" 
+			columnsM="2" columnsL="2" columnsXL="2" >
+			<form:content>
+			<core:Title text="Basic" />
+				<Label text="SAP ID and Name"  required="true" />
+					<Input value="{UserId}" enabled="false"  />
+					<Input value="{LastName}, {FirstName}" enabled="false" />
+
+					<Label text="ID or Passport" id="RegIdPassportLabel" required="true" 
+										tooltip="ID / Passport Number"/>
+					<Input value="{IdOrPassport}"  id="RegIdPassport" change="onInputChanged"/>
+					
+					<Label text="Surame (拼音:姓)" id="RegLastNameLabel" required="true" />
+					<Input value="{RegLastName}" placeholder="Same as Passport or ID card"  change="onInputChanged"/>
+
+					<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" />
+					<Input value="{RegFirstName}" placeholder="Same as Passport or ID card" change="onInputChanged"/>
+
+					<Label text="Nationality" id="NationalityLabel" required="true" />
+					<Input id="OtherNationality" value="{Nationality}"  />
+					
+					<Label text="Title" id="TitleLabel" required="true" />
+					<mylib:SelectExt name="Title" selectedKey="{Title}" id="Title" />
+
+					<Label text="Age" id="AgeLabel" required="true" />
+					<Input value="{Age}" id="Age" type="Number" change="onInputChanged"/>
+					
+					<Label text="Email Address" id="EmailLabel" required="true" />
+					<Input value="{Email}" id="Email"  change="onInputChanged"/>
+				
+					<Label text="Phone"  required="true" />
+					<Input value="{Phone}" id="Phone"  change="onInputChanged" />
+
+					<Label text="**Status" id="StatusLabel" required="false" />
+				    <mylib:SelectExt name="Status" selectedKey="{Status}" id="Status" />
+
+			<core:Title text="Detail" />
+				
+				<Label text="Distance" id="DistanceLabel" required="true" />
+				<mylib:SelectExt   id="Distance" enableAdditionalText="true"  name="Distance"
+					selectedKey="{Distance}" />
+
+				<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
+				<mylib:SelectExt   selectedKey="{TshirtSize}" enableAdditionalText="true" name="TshirtSize" id="TshirtSize" 
+					/>
+
+				 <Label text="Previous best time" />
+				 <VBox width="100%">
+                    <HBox> <Label text="Full Marathon" width="120px" /> 
+                    	   <Input value="{FullBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+                    </HBox>
+                       <HBox> <Label text="Half Marathon" width="120px" /> 
+                    	   <Input value="{HalfBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+                    </HBox>
+                       <HBox> <Label text="8.5K Fun Run" width="120px" /> 
+                    	   <Input value="{FunBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+                    </HBox>
+                </VBox>
+												
+				<Label text="Department" id="DepartmentLabel" required="true" />
+				<mylib:SelectExt name="Department" selectedKey="{Department}"  id="Department" />
+
+				<Label text="Work Location" id="LocationLabel" required="true" />
+				<mylib:SelectExt name="Location" selectedKey="{Location}"  id="Location" />
+
+				<Label text="Club" id="ClubLabel" required="false" />
+				<mylib:SelectExt name="Club" selectedKey="{Club}" id="Club" />
+
+				<!-- let administrator to change whether is vip -->
+				<Label text="**VIP" id="VIP" required="false" />
+				<CheckBox selected="{Vip}"  />
+
+			</form:content>
+		</form:SimpleForm>
+<Panel headerText="Attachments" id="attachmentPanel">
+<l:Grid defaultSpan="L6 M6 S6">
+<VBox>
+	<!-- text='{parts:[{path:"Id/FileName"}, {path:"Id/Type"}], formatter: ".fmtAttachmentLink" }' 
+	, formatter: ".fmtAttachmentSrc" mime="{Id/Mime}" -->
+	<Link href="{Id/src}" target="_blank"  
+		text="ID or Passport Picture"
+		emphasized="true"/>
+	<mylib:Attachment src='{Id/src}' id="idAttachment"
+	   />
+</VBox>
+
+<!-- <VBox>
+	<Link href="{Photo/src}" target="_blank"  
+		text="Photo Picture"
+		emphasized="true"/>
+	<mylib:Attachment src="{Photo/src}"  id="photoAttachment"
+	   />
+</VBox>
+ -->
+
+<VBox id="residenceAttachmentBox">
+	<Link href="{Residence/src}" target="_blank"  
+		text="Residence permit Information"
+		emphasized="true"/>
+	<mylib:Attachment src="{Residence/src}"  id="ResidenceAttachment"
+	   />
+</VBox>
+
+<VBox>
+	<Link href="{Form/src}"  target="_blank"
+		text="Registration Form (click to open in new file)" 
+		emphasized="true"/>
+	<mylib:Attachment src="{Form/src}"  id="formAttachment"
+	  width="800px"  height="800px" />
+</VBox>
+
+</l:Grid>
+</Panel>
+		 <footer>  
+            <Bar id="footerBar">
+            	<contentMiddle>
+            		<Button tooltip="修改项目设置：VIP列表"
+	                        text="Setting"
+	                        icon="sap-icon://settings"
+	                        press="onSettingPressed">
+	                </Button>
+
+            		<Button tooltip="下载官方报名报个"
+	                        text="Download Form"
+	                        icon="sap-icon://download"
+	                        press="onDownloadExcelPressed">
+	                </Button>
+
+	                <Button  tooltip="下载附件"
+	                        text="Download Attachments"
+	                        icon="sap-icon://download"
+	                        press="onDownloadAttachmentPressed">
+	                </Button>
+            	</contentMiddle>
+
+                <contentRight>
+                	<Button
+                        text="Delete"
+                        type="Emphasized"
+                        icon="sap-icon://delete"
+                        id="deleteBtn"
+                        press="onDeletePressed"
+                        enabled="{= !!${Status} }"
+                        >
+                    </Button>
+
+                    <Button
+                        text="Save"
+                        type="Emphasized"
+                        icon="sap-icon://save"
+                        id="saveBtn"
+                        press="onSavePressed"
+                        enabled="{= !!${Status} }"
+                        >
+                    </Button>
+
+                    <Button
+                        text="Approve"
+                        type="Accept"
+                        icon="sap-icon://approvals"
+                        id="approveBtn"
+                        press="onApproveRejectPressed"
+                        enabled="{path: 'Status', formatter: '.fmtApproveEnableStatus'}"
+                        >
+                    </Button>
+                    <Button
+                        text="Reject"
+                        type="Reject"
+                        icon="sap-icon://employee-rejections"
+                        id="rejectBtn"
+                        enabled="{parts:[{path:'Status'},{path:'Vip'}], formatter: '.fmtApproveEnableStatus'}"
+                        press="onApproveRejectPressed">
+                    </Button>
+                </contentRight>
+            </Bar>
+        </footer>
+
+    </Page>
+</core:FragmentDefinition>       
+

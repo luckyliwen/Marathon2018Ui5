@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="Reject registration with reason">
+        <content>
+            <form:SimpleForm>
+                <form:content>
+                    <Label text="Reason"
+                        required="true">
+                    </Label>
+                    <TextArea
+                        rows="4"
+                        id="reasonTextArea" liveChange="onRejectReasonChanged" >
+                    </TextArea>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <buttons>
+            <Button
+                text="Clear"
+                press="onDialogClearPressed">
+            </Button>
+            <Button
+                text="Reject"  id="rejectDialogBtn"
+                icon="sap-icon://employee-rejections"
+                press="onDialogRejectPressed" enabled="false">
+            </Button>
+            <Button
+                text="Cancel"
+                icon="sap-icon://sys-cancel"
+                press="onDialogCancelPressed">
+            </Button>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
+
