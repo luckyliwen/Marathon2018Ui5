@@ -23,8 +23,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		Util.setTableColumnsFilterSortProperty(this.oRegTable);
 		
 		this.oVizBox = this.byId("vizBox");
-		this.oRegViz = this.byId("registrationViz");
-		
+		this.oRegStatusViz = this.byId("regByStatusViz");
+		this.oRegDepartmentViz = this.byId("regByDepartmentViz");
+
 		this.userId = "";
 		this.oModel = new JSONModel(); 
 		this.oVizBox.setModel( this.oModel);
@@ -35,7 +36,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 				path: "/Registrations",
 				sorter: [new sap.ui.model.Sorter("Status")],
 				// filters: [new sap.ui.model.Filter("Status", 'EQ', 'Approved')]
-			});
+		});
+
+		this.initVizPart();
 	},
 
 	adjustViewByRole: function( bAdmin ) {
@@ -48,10 +51,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    	}
 	    }
 
-	    //for some reg table need remove for legal reason
-	    //
 	},
-	
 	
 
 	initVizPart: function( evt ) {
@@ -65,15 +65,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			
 			var content = oData.GetStatistics;
 			that.mSta  = JSON.parse(content);
-
-		//as now it will include the special donation, so for the /Receive and /Giving 
-		//we need exclude it if there   "SAP (SAP)"   "SAP Dalian Club (SAPDALIAN)"  "SAP Run Club (SAPRUNCLUB)
-			var aDel=[];
-		
 			
 			that.oModel.setData( that.mSta);
-			// this.oRegViz.setModel(dataModel);
-			// 
 		}
 
         function onGetStatisticsError(error) {
@@ -82,20 +75,19 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		}
 
 	    this.oDataModel.callFunction("/GetStatistics", {
-	    	urlParameters: { Top: "13", '$format': "json"},
 			method: "GET",
 			success: onGetStatisticsSuccess,
 			error: onGetStatisticsError
 		});
 
-		that.byId("vizBox").setBusy(false);
+		that.byId("vizBox").setBusy(true);
 	},
 
 	setVizPartProp: function( evt ) {
 		if (this.bAlreadySetVizProp)
 			return;
 
-	    this.oRegViz.setVizProperties({
+	    this.oRegStatusViz.setVizProperties({
                 plotArea: {
                     dataLabel: {
                         // formatString:CustomerFormat.FIORI_LABEL_SHORTFORMAT_2,
@@ -121,7 +113,31 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 }
         });
 
- 		
+ 		this.oRegDepartmentViz.setVizProperties({
+                plotArea: {
+                    dataLabel: {
+                        // formatString:CustomerFormat.FIORI_LABEL_SHORTFORMAT_2,
+                        visible: true
+                    }
+                },
+                valueAxis: {
+                    // label: {
+                    //     formatString: CustomerFormat.FIORI_LABEL_SHORTFORMAT_10
+                    // },
+                    title: {
+                        visible: true
+                    }
+                },
+                categoryAxis: {
+                    title: {
+                        visible: true
+                    }
+                },
+                title: {
+                    visible: true,
+                    text: 'Registratration count by department'
+                }
+        });
         this.bAlreadySetVizProp = true;
 	},
 	
