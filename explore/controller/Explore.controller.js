@@ -152,18 +152,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	
 
 	onRegistrationTableRowSelectChanged: function( evt ) {
-	    //only the Approved can donate
 	    var selIdx = this.oRegTable.getSelectedIndices();
-	    var bHasOneApproved = false;
-		for (var i=0; i < selIdx.length; i++) {
-			var context = this.oRegTable.getContextByIndex( selIdx[i]);
-			var status = context.getProperty("Status");
-			if (status == "Approved") {
-				bHasOneApproved = true;
-				break;
-			}
-		}
-	    this.byId("donateBtn").setEnabled( bHasOneApproved );
 	    this.byId("emailBtn").setEnabled( selIdx.length > 0 );
 	},
 

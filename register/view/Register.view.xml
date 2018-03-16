@@ -20,9 +20,9 @@
 								<form:content>
 									<!-- <core:Title /> -->
 									<Label text="Closing date for registration" />
-  									<Title titleStyle="H5" text="18:00, March 28th" />
+  									<Title titleStyle="H5" text="18:00, March 28th (Wednesday)" />
 									<Label text="Event date &amp; venue" />
-  									<Title titleStyle="H5" text="May 19st (Saturday), Huang-ya-guan Great Wall, Tianjin" />
+  									<Title titleStyle="H5" text="May 19th (Saturday), Huang-ya-guan Great Wall, Tianjin" />
 
 									<!-- <core:Title /> -->
 									<!-- <Label text="Runner Candidate Number" />
@@ -34,7 +34,7 @@
 
 									<Label text="The latest updates on Jam page" textAlign="left" />
 									<Link text="SAP Great Wall Marathon 2018 Team Jam Group"  target="_blank" 
-										href="https://jam4.sapjam.com/groups/3mAEh25cxRkckjYqVAQpcG/overview_page/182042" />
+										href="https://jam4.sapjam.com/groups/3mAEh25cxRkckjYqVAQpcG/overview_page/g6GGIEoZgKS5lVHOpXmGQ6" />
 
 								</form:content>
 							</form:SimpleForm>
@@ -46,19 +46,21 @@
 									<Label text="SAP ID and Name"  required="true" />
 									<Input value="{/UserId}" enabled="false"  />
 									<Input value="{/LastName}, {/FirstName}" enabled="false" />
-									
 
 									<Label text="ID or Passport" id="RegIdPassportLabel" required="true" 
 										tooltip="ID / Passport Number"/>
-									<Input value="{/IdOrPassport}"  id="RegIdPassport" change="onInputChanged"/>
+									<Input value="{/IdOrPassport}"  id="RegIdPassport" change="onInputChanged" 
+										placeholder="Chinese use ID, foreigner use passport"/>
 
 									<Label text="Surname (拼音:姓)" id="RegLastNameLabel" required="true" 
-										tooltip="Same as Passport or ID card"/>
-									<Input value="{/RegLastName}"  id="RegLastName" change="onInputChanged"/>
+										tooltip="Chinese: 中文 + 拼音, Foreigner: surname"/>
+									<Input value="{/RegLastName}"  id="RegLastName" change="onInputChanged"
+										placeholder="张 zhang | surname"/>
 
 									<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" 
-										tooltip="Same as Passport or ID card"/>
-									<Input value="{/RegFirstName}" id="RegFirstName" change="onInputChanged"/>
+										tooltip="Chinese: 中文 + 拼音, Foreigner: first name"/>
+									<Input value="{/RegFirstName}" id="RegFirstName" change="onInputChanged"
+										placeholder="三 san | first name"/>
 
 									<Label text="Nationality/Area" id="NationalityLabel" required="true" />
 									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" 

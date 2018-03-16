@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core" class="sapUiSizeCompact">
 <App>
 <pages>
-    <Page   title="2018 Creat Wall Marathon Information"
+    <Page   title="2018 Great Wall Marathon Information"
         titleLevel="H2">
         <content>
             <IconTabBar expandable="false"  id="iconTabBar"  select="onTconTabBarSelectChanged"
