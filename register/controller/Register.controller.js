@@ -55,6 +55,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			//this[name].setUploadUrl
 			// this.oUploader[ key ].attachSelectFile(this.checkButtonStatus, this);
 		}
+
+		this.setInputValidation();
 	},
 	
 	/**
@@ -62,16 +64,19 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	*/
 	setInputValidation: function() {
 		var map = {
-			"RegIdPassport": "",
-			"RegSurname": "",
-			"RegFirstName": "",
-			"RegAge": "",
-			"RegEmail": "
+			"RegIdPassport": Enum.ValidationType.IdPassport,
+			"RegSurname": Enum.ValidationType.Name,
+			"RegFirstName": Enum.ValidationType.Name,
+			"RegAge": Enum.ValidationType.Age,
+			"RegEmail": Enum.ValidationType.Email
 		};
 		for (var key in map) {
-			//
+			//set validate type so later know how to check
 			this.byId(key).data("ValidationType", map[key]);
 		}
+
+		//initial value for the total validation
+		this.mValidation = {};
 	},
 
 	fmtPageTitle: function( status , reason) {
@@ -125,13 +130,13 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			"csr.register.view.LicenseConfirm", this);
 		var html = '<div>Dear colleague, thanks for your interest in the TEAM SAP event!<br/><br/>' +
 		 	'SAP provides a free event entry for each runner. if you’re based outside Beijing, the relevant travel policy:<br>' +
-		 		'<b>approved business trip should applied, or you need to cover your own travel expense.<br/><br/>' + 
+		 		'<b>approved business trip should applied, or you need to cover your own travel expense.</b><br/><br/>' + 
 			'All runners receive a complimentary TEAM SAP running jersey and free transportation to and from the event start/finish on the race day.' +
 			'Please check your calendar before submitting your registration.<br/><br/> ' +
 			'If you cannot participate you must inform Ms. Yang Ying (Email: ying.yang04@sap.com) or Ms. Bela Zhang (Email: yanjun.zhang@sap.com) by March 28. '+
 			'If you withdraw after March 28 or no-show on the event day, <b>you will forfeit the registration fee of RMB 1,800 as a donation to our designated charity.</b>' +
-			'You will select full or half marathon or fun run distance when you register. Changes are not allowed.<br/>' +
-			'<h4>Regards,<br/>TEAM SAP Committee</h4></div>';
+			'<br/>You will select full or half marathon or fun run distance when you register. Changes are not allowed.<br/><br/>' +
+			'Regards,<br/>TEAM SAP Committee<br/><hr/><br/></div>';
 
 		this.byId("licenseContentHtml").setContent(html);
 
@@ -153,15 +158,13 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 
 	onLicenseDialogOKButtonPressed: function() {
-		/*if (this.byId("radioBtnDisagree").getSelected()) {
-			window.close();
-		} else {
-			this.oLicenseDialog.close();
-		}*/
 
 		this.oLicenseDialog.close();
 		if (this.byId("radioBtnDisagree").getSelected()) {
-			window.close();
+			// now can't close the window, so just make it readonly
+			// window.close();
+			Util.warn("You can't submit the registration because you don't agree the license!");
+			this.oSaveBtn.setEnabled(false);
 		}
 	},
 
@@ -399,13 +402,21 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 
 	checkButtonStatus: function( evt ) {
-	    //for the save, cancel always enabled 
+		//for the save, only when no validation error
+		var inputValid = true;
+		for (var key in this.mValidation) {
+			inputValid = false;
+			break;
+		}
+		this.oSaveBtn.setEnabled( inputValid);
+
+	    //for the cancel always enabled 
 	    if (this.oSubmitBtn) {
 	    	var status = true;
 
 	    	//check all the necessary input is not null
 	    	var config = Config.getConfigure();
-	    	for (var key in config) {
+	    	for ( key in config) {
 	    		var value = config[key];
 	    		if (value.required) {
 	    			if ( key in this.mRegister) {
@@ -429,13 +440,92 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    		}
 	    	}
 
-	    	this.oSubmitBtn.setEnabled(status);
+	    	this.oSubmitBtn.setEnabled(status && inputValid);
 	    }
 	},
-	
+
+	//copy from http://blog.csdn.net/websites/article/details/66969871
+	validateChineseId: function(code) {
+		//first rough valid
+		var valid = /^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/.test(code);
+		if( valid && code.length == 18){  
+            code = code.split('');  
+            //∑(ai×Wi)(mod 11)  
+            //加权因子  
+            var factor = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];  
+            //校验位  
+            var parity = [ 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 ];  
+            var sum = 0;  
+            var ai = 0;  
+            var wi = 0;  
+            for (var i = 0; i < 17; i++)  
+            {  
+                ai = code[i];  
+                wi = factor[i];  
+                sum += ai * wi;  
+            }  
+            if(parity[sum % 11] != code[17].toUpperCase()){  
+            	valid = false;
+            }  
+        }  
+        return valid;
+	},
+
+	validateInput: function(validateType, input) {
+		var val = input.getValue().trim();
+		//now for simple just manually do the check, later need considerate use the UI5 provide method
+		var valid = true;
+
+		var stateText = "";
+		switch (validateType) {
+			case Enum.ValidationType.IdPassport:
+				//only check the Chinese 
+				if ( this.mRegister.Nationality == "Chinese") {
+					//old 15, new 18, the last can be x or X
+					valid = this.validateChineseId(val);
+					if ( !valid)
+						stateText = "Valid Chinese Identity is 15 or 18 digital and follow special rule";
+				}
+				break;
+			case Enum.ValidationType.Age:
+				valid = /^\d{2}$/.test(val);
+				if (valid) {
+					valid = parseInt(val) > 10;  //old enough ?
+				}
+				if (!valid)
+					stateText = "Valid age must be large 10 and less than 100";
+				break;
+			case Enum.ValidationType.Name:
+				if ( this.mRegister.Nationality == "Chinese") {
+					valid = /^([\u4e00-\u9fa5]){1}/.test(val)  && /[a-zA-Z]{1}$/.test(val);
+					if (!valid)
+						stateText = "先中文再拼音";
+				}
+				break;
+			case Enum.ValidationType.Phone:
+				valid = /[\d-+]+/.test(val) && val.length > 7;
+				if ( !valid)
+					stateText = "Phone lenght must large 7";
+				break;
+			case Enum.ValidationType.Email:
+				valid = /\w+([-.]\w+)*@sap.com/.test(val);
+				if (!valid)
+					stateText = "Only SAP email is valid";
+				break;
+		}
+
+		if ( !valid) {
+			this.mValidation[ input.getId()] = false;
+			input.setValueState("Error");
+			input.setValueStateText(stateText);
+		} else {
+			delete this.mValidation[ input.getId()];
+			input.setValueState("Success");
+		}
+	},
+
 	onInputChanged: function( oEvent ) {
 		var source = oEvent.getSource();
-		var id = source.getId();
 		//??later need add more check for the input
 		/*if ( id.indexOf("RegLastName") != -1 || id.indexOf("RegFirstName") != -1) {
 			var value = source.getValue();
@@ -446,6 +536,10 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 				}
 			}
 		}*/
+		var valType = source.data("ValidationType");
+		if ( valType) {
+			this.validateInput(valType, source);
+		}
 	    this.checkButtonStatus();
 	},
 

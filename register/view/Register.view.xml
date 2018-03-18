@@ -72,13 +72,13 @@
 									<mylib:SelectExt name="Title" selectedKey="{/Title}" id="Title" />
 
 									<Label text="Age" id="AgeLabel" required="true" />
-									<Input value="{/Age}" type="Number" id="Age"  change="onInputChanged"/>
+									<Input value="{/Age}" type="Number" id="RegAge"  change="onInputChanged"/>
 									
 									<Label text="Email Address" id="EmailLabel" required="true" />
-									<Input value="{/Email}" type="Email" id="Email"  change="onInputChanged"/>
+									<Input value="{/Email}" type="Email" id="RegEmail"  change="onInputChanged"/>
 								
 									<Label text="Phone"  required="true" />
-									<Input value="{/Phone}" type="Tel" id="Phone"  change="onInputChanged" />
+									<Input value="{/Phone}" type="Tel" id="RegPhone"  change="onInputChanged" />
 									
 								<core:Title text="Detail" />
 									<Label text="Distance" id="DistanceLabel" required="true" />

@@ -1,14 +1,13 @@
 <core:FragmentDefinition
-    xmlns="sap.m"
+    xmlns="sap.m" xmlns:form="sap.ui.layout.form"
     xmlns:core="sap.ui.core">
 
     <Dialog
         title="Great Wall Marathon 2018 License Agreement"
         contentWidth="800px"
-        contentHeight="600px">
+        contentHeight="400px">
         <content>
-            <core:HTML id="licenseContentHtml">
-            </core:HTML>
+            <core:HTML id="licenseContentHtml" />
             <HBox>
                 <items>
                     <RadioButton id="radioBtnAgree"  select="onLicenseRadioBtnSelect"
@@ -27,4 +26,4 @@
         </beginButton>
     </Dialog>
 </core:FragmentDefinition>
-
+            
