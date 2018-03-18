@@ -63,20 +63,25 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	It is more troubsome to set it in xml like <customData><core:CustomData key='' value=''>, so just set in code manually
 	*/
 	setInputValidation: function() {
+		this.aValidationId = [];  //all the id which need do validation
+
 		var map = {
 			"RegIdPassport": Enum.ValidationType.IdPassport,
 			"RegSurname": Enum.ValidationType.Name,
 			"RegFirstName": Enum.ValidationType.Name,
 			"RegAge": Enum.ValidationType.Age,
-			"RegEmail": Enum.ValidationType.Email
+			"RegEmail": Enum.ValidationType.Email,
+			"RegPhone": Enum.ValidationType.Phone
 		};
 		for (var key in map) {
 			//set validate type so later know how to check
 			this.byId(key).data("ValidationType", map[key]);
+			this.aValidationId.push( key );
 		}
 
 		//initial value for the total validation
 		this.mValidation = {};
+
 	},
 
 	fmtPageTitle: function( status , reason) {
@@ -87,6 +92,12 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 		}
 	},
 	
+	onTechnicalHelpPressed: function() {
+		var msg = "This registration solution is provided by lucky li using SAP UI5. \r\n" +
+			"As UI5 is not well supported by IE, so please first retry using the latest Chrome/Firefox.\r\n" +
+			"If you found some bug, please send mail to lucky.li01@sap.com with detail screen copy and console information (by F12)".
+		Util.info( msg );			
+	},
 
 	onDownloadFormPressed: function( evt ) {
 	    window.open(Config.getConfigure().FormDownloadUrl, "_blank");
@@ -98,6 +109,9 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    var input = this.byId("OtherNationality").setEnabled(flag);
 
 	    this.adjustAttachmentUi();
+
+	    //as some validaiton are depending on the nationality, so need retrigger the validation when changed
+	    this.redoValidatonForNationalityChange();
 	},
 
 	adjustAttachmentUi: function( evt ) {
@@ -128,7 +142,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	displayLicenseConfirm: function() {
 		this.oLicenseDialog =  sap.ui.xmlfragment(this.getView().getId(), 
 			"csr.register.view.LicenseConfirm", this);
-		var html = '<div>Dear colleague, thanks for your interest in the TEAM SAP event!<br/><br/>' +
+		var html = '<div style="margin: 2rem 4rem">Dear colleague, thanks for your interest in the TEAM SAP event!<br/><br/>' +
 		 	'SAP provides a free event entry for each runner. if you’re based outside Beijing, the relevant travel policy:<br>' +
 		 		'<b>approved business trip should applied, or you need to cover your own travel expense.</b><br/><br/>' + 
 			'All runners receive a complimentary TEAM SAP running jersey and free transportation to and from the event start/finish on the race day.' +
@@ -471,47 +485,59 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
         return valid;
 	},
 
+	redoValidatonForNationalityChange: function() {
+		//only those depending on nationlity need recheck
+		var aId = ["RegIdPassport", "RegSurname", "RegFirstName" ];
+		for (var i = 0; i<aId.length; i++) {
+			var input = this.byId(aId[i]);
+			var valType = input.data("ValidationType");
+			this.validateInput( valType, input);
+		}
+	},
+
 	validateInput: function(validateType, input) {
 		var val = input.getValue().trim();
 		//now for simple just manually do the check, later need considerate use the UI5 provide method
 		var valid = true;
 
 		var stateText = "";
-		switch (validateType) {
-			case Enum.ValidationType.IdPassport:
-				//only check the Chinese 
-				if ( this.mRegister.Nationality == "Chinese") {
-					//old 15, new 18, the last can be x or X
-					valid = this.validateChineseId(val);
-					if ( !valid)
-						stateText = "Valid Chinese Identity is 15 or 18 digital and follow special rule";
-				}
-				break;
-			case Enum.ValidationType.Age:
-				valid = /^\d{2}$/.test(val);
-				if (valid) {
-					valid = parseInt(val) > 10;  //old enough ?
-				}
-				if (!valid)
-					stateText = "Valid age must be large 10 and less than 100";
-				break;
-			case Enum.ValidationType.Name:
-				if ( this.mRegister.Nationality == "Chinese") {
-					valid = /^([\u4e00-\u9fa5]){1}/.test(val)  && /[a-zA-Z]{1}$/.test(val);
+		if ( val) {
+			switch (validateType) {
+				case Enum.ValidationType.IdPassport:
+					//only check the Chinese 
+					if ( this.mRegister.Nationality == "Chinese") {
+						//old 15, new 18, the last can be x or X
+						valid = this.validateChineseId(val);
+						if ( !valid)
+							stateText = "Valid Chinese Identity is 15 or 18 digital and follow special rule";
+					}
+					break;
+				case Enum.ValidationType.Age:
+					valid = /^\d{2}$/.test(val);
+					if (valid) {
+						valid = parseInt(val) > 10;  //old enough ?
+					}
 					if (!valid)
-						stateText = "先中文再拼音";
-				}
-				break;
-			case Enum.ValidationType.Phone:
-				valid = /[\d-+]+/.test(val) && val.length > 7;
-				if ( !valid)
-					stateText = "Phone lenght must large 7";
-				break;
-			case Enum.ValidationType.Email:
-				valid = /\w+([-.]\w+)*@sap.com/.test(val);
-				if (!valid)
-					stateText = "Only SAP email is valid";
-				break;
+						stateText = "Valid age must be large 10 and less than 100";
+					break;
+				case Enum.ValidationType.Name:
+					if ( this.mRegister.Nationality == "Chinese") {
+						valid = /^([\u4e00-\u9fa5]){1}/.test(val)  && /[a-zA-Z]{1}$/.test(val);
+						if (!valid)
+							stateText = "先中文再拼音";
+					}
+					break;
+				case Enum.ValidationType.Phone:
+					valid = /[\d-+]+/.test(val) && val.length > 7;
+					if ( !valid)
+						stateText = "Phone lenght must large 7";
+					break;
+				case Enum.ValidationType.Email:
+					valid = /\w+([-.]\w+)*@sap.com/.test(val);
+					if (!valid)
+						stateText = "Only SAP email is valid";
+					break;
+			}
 		}
 
 		if ( !valid) {
@@ -703,7 +729,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 	onActionSuccesss: function(oldAction ) {
 		Util.showToast(oldAction + " successful!");
-		if ( this.mRegister.Status == "" ) {
+		if ( this.mRegister.Status == "Submitted" ) {
 			var msg = "Thanks for your interest in the TEAM SAP event!\r\n" +
 				"You will receive an email notification in 1-2 working days to let you know if your registration is successful.";
 			Util.info(msg);

@@ -143,6 +143,13 @@
 				</content>
 				<footer>
 		            <Bar id="footerBar">
+		            <contentLeft>
+		            	  <Button
+	                        text="Technical help & bug report"
+	                        icon="sap-icon://sys-help"
+	                        press="onTechnicalHelpPressed">
+	                    </Button>
+		            </contentLeft>
 		            <contentMiddle>
 	                    <Button
 	                        text="Download Registration Form"

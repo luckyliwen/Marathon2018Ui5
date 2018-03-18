@@ -5,7 +5,7 @@
     <Dialog
         title="Great Wall Marathon 2018 License Agreement"
         contentWidth="800px"
-        contentHeight="400px">
+        contentHeight="600px">
         <content>
             <core:HTML id="licenseContentHtml" />
             <HBox>
