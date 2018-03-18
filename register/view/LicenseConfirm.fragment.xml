@@ -1,0 +1,30 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="Great Wall Marathon 2018 License Agreement"
+        contentWidth="800px"
+        contentHeight="600px">
+        <content>
+            <core:HTML id="licenseContentHtml">
+            </core:HTML>
+            <HBox>
+                <items>
+                    <RadioButton id="radioBtnAgree"  select="onLicenseRadioBtnSelect"
+                        text="I Acknowledge and Agree ">
+                    </RadioButton>
+                    <RadioButton  id="radioBtnDisagree" select="onLicenseRadioBtnSelect"
+                        text="I Don’t Agree ">
+                    </RadioButton>
+                </items>
+            </HBox>
+        </content>
+        <beginButton>
+            <Button
+                text="OK" id="licenseDlgOkBtn" enabled="false" press="onLicenseDialogOKButtonPressed">
+            </Button>
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>
+

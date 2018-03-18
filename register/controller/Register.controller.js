@@ -55,9 +55,25 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			//this[name].setUploadUrl
 			// this.oUploader[ key ].attachSelectFile(this.checkButtonStatus, this);
 		}
-
 	},
 	
+	/**
+	It is more troubsome to set it in xml like <customData><core:CustomData key='' value=''>, so just set in code manually
+	*/
+	setInputValidation: function() {
+		var map = {
+			"RegIdPassport": "",
+			"RegSurname": "",
+			"RegFirstName": "",
+			"RegAge": "",
+			"RegEmail": "
+		};
+		for (var key in map) {
+			//
+			this.byId(key).data("ValidationType", map[key]);
+		}
+	},
+
 	fmtPageTitle: function( status , reason) {
 		if (status == "Rejected") {
 	    	return "My Registration : status [ " + status + " ], reason: " + reason;
@@ -100,7 +116,55 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 		this.checkButtonStatus();
 	},
+
+	/**
+	As request by HR, for the first time employee need confirm the license.
+	*/
+	displayLicenseConfirm: function() {
+		this.oLicenseDialog =  sap.ui.xmlfragment(this.getView().getId(), 
+			"csr.register.view.LicenseConfirm", this);
+		var html = '<div>Dear colleague, thanks for your interest in the TEAM SAP event!<br/><br/>' +
+		 	'SAP provides a free event entry for each runner. if you’re based outside Beijing, the relevant travel policy:<br>' +
+		 		'<b>approved business trip should applied, or you need to cover your own travel expense.<br/><br/>' + 
+			'All runners receive a complimentary TEAM SAP running jersey and free transportation to and from the event start/finish on the race day.' +
+			'Please check your calendar before submitting your registration.<br/><br/> ' +
+			'If you cannot participate you must inform Ms. Yang Ying (Email: ying.yang04@sap.com) or Ms. Bela Zhang (Email: yanjun.zhang@sap.com) by March 28. '+
+			'If you withdraw after March 28 or no-show on the event day, <b>you will forfeit the registration fee of RMB 1,800 as a donation to our designated charity.</b>' +
+			'You will select full or half marathon or fun run distance when you register. Changes are not allowed.<br/>' +
+			'<h4>Regards,<br/>TEAM SAP Committee</h4></div>';
+
+		this.byId("licenseContentHtml").setContent(html);
+
+		this.oLicenseDialog.setEscapeHandler( function() {
+			//just empty to disable use close it by escape
+		});
+
+		this.oLicenseDialog.open();
+	},
 	
+	
+	//choose agree or disagree radio button
+	onLicenseRadioBtnSelect: function(oEvent) {
+		var btn = oEvent.getSource();
+		
+		var flag = this.byId("radioBtnAgree").getSelected() ||
+				this.byId("radioBtnDisagree").getSelected();
+		this.byId("licenseDlgOkBtn").setEnabled(flag);
+	},
+
+	onLicenseDialogOKButtonPressed: function() {
+		/*if (this.byId("radioBtnDisagree").getSelected()) {
+			window.close();
+		} else {
+			this.oLicenseDialog.close();
+		}*/
+
+		this.oLicenseDialog.close();
+		if (this.byId("radioBtnDisagree").getSelected()) {
+			window.close();
+		}
+	},
+
 	getMyResistration: function() {
 		var that = this;
 		function onGetMyRegistrationSuccess(oData) {
@@ -147,6 +211,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 				that.getUploadedAttachmentInfo();
 			} else {
 				that.onGetInitialDataFinished();
+
+				that.displayLicenseConfirm();
 			}
 
 			if (that.mRegister.UpdateFlag == "admin") {
@@ -543,6 +609,11 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 	onActionSuccesss: function(oldAction ) {
 		Util.showToast(oldAction + " successful!");
+		if ( this.mRegister.Status == "" ) {
+			var msg = "Thanks for your interest in the TEAM SAP event!\r\n" +
+				"You will receive an email notification in 1-2 working days to let you know if your registration is successful.";
+			Util.info(msg);
+		}
 		
 		//update the page title 
 		this.byId('registerPage').setTitle( this.fmtPageTitle(this.mRegister.Status));

@@ -27,10 +27,10 @@
 										tooltip="ID / Passport Number"/>
 					<Input value="{IdOrPassport}"  id="RegIdPassport" change="onInputChanged"/>
 					
-					<Label text="Surame (拼音:姓)" id="RegLastNameLabel" required="true" />
+					<Label text="Surname (姓： 中文+拼音)" id="RegLastNameLabel" required="true" />
 					<Input value="{RegLastName}" placeholder="Same as Passport or ID card"  change="onInputChanged"/>
 
-					<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" />
+					<Label text="First Name (名： 中文+拼音)" id="RegFirstNameLabel" required="true" />
 					<Input value="{RegFirstName}" placeholder="Same as Passport or ID card" change="onInputChanged"/>
 
 					<Label text="Nationality" id="NationalityLabel" required="true" />
@@ -57,7 +57,7 @@
 				<mylib:SelectExt   id="Distance" enableAdditionalText="true"  name="Distance"
 					selectedKey="{Distance}" />
 
-				<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
+				<Label text="T-shirt Size" id="TshirtSizeLabel" required="true" />
 				<mylib:SelectExt   selectedKey="{TshirtSize}" enableAdditionalText="true" name="TshirtSize" id="TshirtSize" 
 					/>
 

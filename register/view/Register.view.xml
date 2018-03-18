@@ -52,15 +52,15 @@
 									<Input value="{/IdOrPassport}"  id="RegIdPassport" change="onInputChanged" 
 										placeholder="Chinese use ID, foreigner use passport"/>
 
-									<Label text="Surname (拼音:姓)" id="RegLastNameLabel" required="true" 
+									<Label text="Surname (姓： 中文+拼音)" id="RegLastNameLabel" required="true" 
 										tooltip="Chinese: 中文 + 拼音, Foreigner: surname"/>
-									<Input value="{/RegLastName}"  id="RegLastName" change="onInputChanged"
-										placeholder="张 zhang | surname"/>
+									<Input value="{/RegLastName}"  id="RegSurname" change="onInputChanged"
+										placeholder="张 Zhang | surname"/>
 
-									<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" 
+									<Label text="First Name (名： 中文+拼音)" id="RegFirstNameLabel" required="true" 
 										tooltip="Chinese: 中文 + 拼音, Foreigner: first name"/>
 									<Input value="{/RegFirstName}" id="RegFirstName" change="onInputChanged"
-										placeholder="三 san | first name"/>
+										placeholder="三 San | first name"/>
 
 									<Label text="Nationality/Area" id="NationalityLabel" required="true" />
 									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" 
