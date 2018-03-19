@@ -145,7 +145,7 @@
 		            <Bar id="footerBar">
 		            <contentLeft>
 		            	  <Button
-	                        text="Technical help / bug report"
+	                        text="Technical help &amp; bug report"
 	                        icon="sap-icon://sys-help"
 	                        press="onTechnicalHelpPressed">
 	                    </Button>

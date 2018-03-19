@@ -94,8 +94,9 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	
 	onTechnicalHelpPressed: function() {
 		var msg = "This registration solution is provided by lucky li using SAP UI5. \r\n" +
-			"As UI5 is not well supported by IE, so please first retry using the latest Chrome/Firefox.\r\n" +
-			"If you found some bug, please send mail to lucky.li01@sap.com with detail screen copy and console information (by F12)";
+			"As UI5 is not well supported by IE, so please first retry using the latest Chrome/Firefox/Safari.\r\n" +
+			"If you found some bug, please first clear the browser history and retry.\r\n\r\n" +
+			"If bug still existed, please send mail to lucky.li01@sap.com with detail screen copy and console information (by F12 you can see Console window)";
 		Util.info( msg );		
 	},
 
