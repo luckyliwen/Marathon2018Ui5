@@ -95,8 +95,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	onTechnicalHelpPressed: function() {
 		var msg = "This registration solution is provided by lucky li using SAP UI5. \r\n" +
 			"As UI5 is not well supported by IE, so please first retry using the latest Chrome/Firefox.\r\n" +
-			"If you found some bug, please send mail to lucky.li01@sap.com with detail screen copy and console information (by F12)".
-		Util.info( msg );			
+			"If you found some bug, please send mail to lucky.li01@sap.com with detail screen copy and console information (by F12)";
+		Util.info( msg );		
 	},
 
 	onDownloadFormPressed: function( evt ) {
@@ -528,9 +528,9 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 					}
 					break;
 				case Enum.ValidationType.Phone:
-					valid = /[\d-+]+/.test(val) && val.length > 7;
+					valid = /^[\d-+]+$/.test(val) && val.length > 7;
 					if ( !valid)
-						stateText = "Phone lenght must large 7";
+						stateText = "Phone lenght must large 7 and contain only 0-9, +-";
 					break;
 				case Enum.ValidationType.Email:
 					valid = /\w+([-.]\w+)*@sap.com/.test(val);
@@ -546,7 +546,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			input.setValueStateText(stateText);
 		} else {
 			delete this.mValidation[ input.getId()];
-			input.setValueState("Success");
+			input.setValueState("None");
 		}
 	},
 
