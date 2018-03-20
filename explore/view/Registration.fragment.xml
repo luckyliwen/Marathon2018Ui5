@@ -55,9 +55,24 @@
             </table:Column>
 
             <table:Column >
+                <table:label> <Label text="surname" /> </table:label>
+                <table:template>
+                    <Text text="{RegLastName}" />
+                </table:template>
+            </table:Column>
+
+             <table:Column >
+                <table:label> <Label text="first Name" /> </table:label>
+                <table:template>
+                    <Text text="{RegFirstName}" />
+                </table:template>
+            </table:Column>
+
+
+            <table:Column >
                 <table:label>
                     <Label
-                        text="Last Name">
+                        text="SAP Last Name">
                     </Label>
                 </table:label>
                 <table:template>
@@ -69,7 +84,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="First Name">
+                        text="SAP First Name">
                     </Label>
                 </table:label>
                 <table:template>
@@ -184,6 +199,20 @@
                     </Text>
                 </table:template>
             </table:Column>
+
+             <table:Column visible="true">
+                <table:label>
+                    <Label
+                        text="Waiting List">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{InWaitingList}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
             <table:Column visible="false">
                 <table:label>
                     <Label

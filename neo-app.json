@@ -89,7 +89,7 @@
         {
     		"permission": "Admin",
     		"description": "Mng approve/reject",
-    		"protectedPaths": [ "/mng" ]
+    		"protectedPaths": [ "/mng", "/explore" ]
 	   }
     ]
 }

@@ -83,9 +83,13 @@
 				<Label text="Club" id="ClubLabel" required="false" />
 				<mylib:SelectExt name="Club" selectedKey="{Club}" id="Club" />
 
+				<Label text="In Waiting List" id="lblWaitingList" required="false" />
+				<CheckBox selected="{InWaitingList}" enabled="false" />
+
+
 				<!-- let administrator to change whether is vip -->
 				<Label text="**VIP" id="VIP" required="false" />
-				<CheckBox selected="{Vip}"  />
+				
 
 			</form:content>
 		</form:SimpleForm>
@@ -188,6 +192,13 @@
                         enabled="{parts:[{path:'Status'},{path:'Vip'}], formatter: '.fmtApproveEnableStatus'}"
                         press="onApproveRejectPressed">
                     </Button>
+					<Button
+                        text="Waiting"
+                        id="waitingBtn"
+                        enabled="{parts:[{path:'Status'}], formatter: '.fmtWaitingEnableStatus'}"
+                        press="onWaitingPressed">
+                    </Button>
+
                 </contentRight>
             </Bar>
         </footer>

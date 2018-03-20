@@ -314,6 +314,10 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			return;
 		}
 
+		var yes = confirm("Are you sure to delete the Registraion? After delete, then can't retrieve back any more!");
+		if ( !yes)
+			return;
+		
 		var that = this;
 	    function onDeleteSuccess( evt ) {
 	        that.getView().setBusy(false);
@@ -360,6 +364,38 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	onRejectReasonChanged: function() {
 	    var reason = this.byId("reasonTextArea").getValue().trim();
 	    this.byId("rejectDialogBtn").setEnabled( !! reason);
+	},
+
+	onWaitingPressed: function(oEvent) {
+		if (!this.currentBindingpath) {
+			console.error("Logic error, should not happend!");
+			return;
+		}
+
+		var mData = {
+			UpdateFlag: Enum.UpdateFlag.Waiting
+		};
+		var that = this;
+
+		function onWaitingSuccess() {
+	        that.getView().setBusy(false);
+	        Util.showToast("Put on waiting list successful!");
+	        
+	        //move to next item
+	        that.onFreshPressed();
+	    }
+	    
+	    function onWaitingError(error) {
+			that.getView().setBusy(false);
+			Util.showError("Put on waiting list failed.", error);
+	    }
+
+	    this.oDataModel.update(this.currentBindingpath, mData, {
+	    	success: onWaitingSuccess, 
+	    	error:   onWaitingError,
+	    });
+
+	    this.getView().setBusy(true);
 	},
 
 	onApproveRejectPressed: function( oEvent, reason) {
@@ -435,6 +471,10 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	},
 	 
 
+	fmtWaitingEnableStatus: function(status) {
+  		return (status == Enum.Status.Submitted);
+	},
+
 	fmtApproveEnableStatus: function( status, vip ) {
 	    if (status == Enum.Status.Submitted) {
 	    	if (vip)
@@ -477,16 +517,23 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        	for (var idx =0; idx < aKey.length; idx++) {
 	        		var key = aKey[idx];
 	        		var val = item[key];
-	        		if (idx >0) {
+
+	        		//!!now for the surname/firstname, need special handle
+	        		if ( idx == 0) {
+	        			var bothName = Util.parseChineseName( item.RegLastName, item.RegFirstName);
+	        			val = bothName.join(',');
+	        			idx = 1;  //first name has been handled
+	        		} else {
 	        			content +=",";
 	        		}
+	        		
 	        		if (val) {
 	        			content += val;
 	        		}
 	        	}
 	        	content += "\r\n";
 	        }
-	    	Util.saveToFile(content, "ApprovedRunner.csv");
+	    	Util.saveToCsvUtf8(content, "ApprovedRunner.csv");
 	    }
 	    
 	    function onGetApprovedRunnerError(error) {

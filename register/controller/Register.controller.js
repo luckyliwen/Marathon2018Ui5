@@ -149,7 +149,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			'All runners receive a complimentary TEAM SAP running jersey and free transportation to and from the event start/finish on the race day.' +
 			'Please check your calendar before submitting your registration.<br/><br/> ' +
 			'If you cannot participate you must inform Ms. Yang Ying (Email: ying.yang04@sap.com) or Ms. Bela Zhang (Email: yanjun.zhang@sap.com) by March 28. '+
-			'If you withdraw after March 28 or no-show on the event day, <b>you will forfeit the registration fee of RMB 1,800 as a donation to our designated charity.</b>' +
+			'If you withdraw after March 28 or no-show on the event day, <b>you will forfeit the registration fee of RMB 1,950 as a donation to our designated charity.</b>' +
 			'<br/>You will select full or half marathon or fun run distance when you register. Changes are not allowed.<br/><br/>' +
 			'Regards,<br/>TEAM SAP Committee<br/><hr/><br/></div>';
 
@@ -585,18 +585,25 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	//as Save, Cancel, Submit has similar logic, so use same function
 	onResigerActionButtonPressed: function( oEvent ) {
 		//for the age, need check ??
-
 		var btn = oEvent.getSource();
 		var action = btn.data("Action");
 
-		if (action == "Cancel") {
-			var bConfirm = confirm("Are you sure to cancel the Registraion? After cancel, then can't submit again!");
-			if (!bConfirm)
-				return;
-		}
-
 		var oldStatus = this.mRegister.Status;
 	    var newStatus  = this.getNewStatus( action );
+
+	    //As request, after approved, then can't cancel himself
+	    if (action == "Cancel") {
+	    	if ( oldStatus == "Approved") {
+	    		var msg = "After approved, you can't cancel by yourself.\r\n" +
+	    			"Please contact Ms. Yang Ying (Email: ying.yang04@sap.com) or Ms. Bela Zhang (Email: yanjun.zhang@sap.com)";
+	    		Util.warn( msg);
+	    		return;
+	    	} else {
+				var bConfirm = confirm("Are you sure to cancel the Registraion? After cancel, then can't submit again!");
+				if (!bConfirm)
+					return;
+			}
+		}
 
 	    var bCreate = true;
 	    if (oldStatus != "New") {
@@ -604,7 +611,6 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    }
 
 	    this.mRegister.Status = newStatus;
-
 	    
 	    //for submit, need upload the attachment 
 	    var oldAction = action;
