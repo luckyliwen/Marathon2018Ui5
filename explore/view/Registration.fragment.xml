@@ -200,6 +200,19 @@
                 </table:template>
             </table:Column>
 
+            <table:Column visible="false">
+                <table:label> <Label text="Age"> </Label> </table:label>
+                <table:template> <Text text="{Age}"> </Text> </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label> <Label text="Title"> </Label> </table:label>
+                <table:template> <Text text="{Title}"> </Text> </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label> <Label text="Vip"> </Label> </table:label>
+                <table:template> <Text text="{Vip}"> </Text> </table:template>
+            </table:Column>
+
              <table:Column visible="true">
                 <table:label>
                     <Label
@@ -237,6 +250,9 @@
                     </Text>
                 </table:template>
             </table:Column>
+
+            
+
 
         </table:columns>
     </table:Table>

@@ -526,6 +526,11 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        		} else {
 	        			content +=",";
 	        		}
+
+	        		//now the id display in Excel will like 2.10824E+17, so we need add special handle
+	        		if ( key == "IdOrPassport") {
+	        			val = '="' + val + '"';
+	        		}
 	        		
 	        		if (val) {
 	        			content += val;
